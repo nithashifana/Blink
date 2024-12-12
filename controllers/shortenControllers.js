@@ -39,17 +39,18 @@ module.exports.redirectUrl = async(req, res) => {
         }
 
         existingUrl.dailyCount += 1;
+        existingUrl.hitRate += 1;
+        await existingUrl.save();
+
         if(existingUrl.dailyCount > 20) {
             return res.status(429).json({ error: 'Rate limit(20) exceede for this URL.'});
         }
 
-        existingUrl.hitRate += 1;
+        
         if (existingUrl.hitRate % 10 ===0) {
-            await existingUrl.save();
             return res.redirect('https://www.google.com');
         }
-        
-        await existingUrl.save();
+
         res.redirect(existingUrl.longUrl)
     } catch (error) {
         console.error("Error in redirect url.");
@@ -60,11 +61,12 @@ module.exports.redirectUrl = async(req, res) => {
 module.exports.getUrlDetails = async (req, res) => {
     try {
         const { existingUrl } = req.params;
-        let query = { longUrl: existingUrl };
-        
-        console.log("Query:", query); 
-
-        const urlData = await Url.findOne(query);
+        const urlData = await Url.findOne({
+            $or: [
+                { shortUrl: existingUrl },
+                { longUrl: existingUrl }
+            ]
+        });
 
         if (!urlData) {
             console.error("No URL found with query:", query);
