@@ -21,11 +21,6 @@ const urlSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
-    date: {
-        default: Date.now,
-        type: Date,
-        
-    },
     lastAccessDate: {
         type: String,
         default: () => formatDate(new Date()),

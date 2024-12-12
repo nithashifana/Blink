@@ -1,23 +1,21 @@
 const Url = require("../models/shortenModel");
 const crypto = require('crypto');
-const formatDate = require("../util/formatDate");
-
+const formatDate = require("../util/formatDate")
 const generateShortUrl = () => crypto.randomBytes(4).toString('hex');
 
 module.exports.shortenUrl = async(req, res) => {
     const { longUrl } = req.body;
     if(!longUrl)
         return res.status(400).json({ error: 'Long url is required.'});
-
     try {
         const existingUrl = await Url.findOne({ longUrl });
         if(existingUrl) {
-            return res.status(200).json({ shortUrl: `http://localhost:3000/${existingUrl.shortUrl}`});
+            return res.status(400).json({ shortUrl: `${req.protocol}://${req.host}/${url.shortUrl}`});
         }
         const shortUrl = generateShortUrl();
         newUrl = new Url({ longUrl, shortUrl});
         await newUrl.save();
-        res.status(201).json({ shortUrl: `http://localhost:3000/${shortUrl}`});
+        res.status(201).json({ shortUrl: `${req.protocol}://${req.host}/${url.shortUrl}`});
     } catch(error) {
         console.error("Error", error);
         res.status(500).json({message: "Internal sever error", error});
@@ -33,13 +31,12 @@ module.exports.redirectUrl = async(req, res) => {
         }
 
         const now = new Date();
-        const currentDate = `${now.getDate().toString().padStart(2, '0')}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getFullYear()}`;
+        const currentDate = formatDate(now);
 
         if(existingUrl.lastAccessDate !== currentDate) {
             existingUrl.dailyCount = 0;
             existingUrl.lastAccessDate = currentDate;
         }
-
 
         existingUrl.dailyCount += 1;
         if(existingUrl.dailyCount > 20) {
@@ -47,7 +44,6 @@ module.exports.redirectUrl = async(req, res) => {
         }
 
         existingUrl.hitRate += 1;
-        
         if (existingUrl.hitRate % 10 ===0) {
             await existingUrl.save();
             return res.redirect('https://www.google.com');
@@ -67,6 +63,14 @@ module.exports.getUrlDetails = async (req, res) => {
         let query = { longUrl: existingUrl };
         
         console.log("Query:", query); 
+
+        const now = new Date();
+        const currentDate = formatDate(now);
+
+        if(existingUrl.lastAccessDate !== currentDate) {
+            existingUrl.dailyCount = 0;
+            existingUrl.lastAccessDate = currentDate;
+        }
 
         const urlData = await Url.findOne(query);
         const url = await Url.find();
