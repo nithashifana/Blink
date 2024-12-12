@@ -10,12 +10,12 @@ module.exports.shortenUrl = async(req, res) => {
     try {
         const existingUrl = await Url.findOne({ longUrl });
         if(existingUrl) {
-            return res.status(400).json({ shortUrl: `${req.protocol}://${req.host}/${existingUrl.shortUrl}`});
+            return res.status(200).json({ shortUrl: `${req.protocol}://${req.get('host')}/redirect/${existingUrl.shortUrl}`});
         }
         const shortUrl = generateShortUrl();
-        newUrl = new Url({ longUrl, shortUrl});
+        const newUrl = new Url({ longUrl, shortUrl});
         await newUrl.save();
-        res.status(201).json({ shortUrl: `${req.protocol}://${req.host}/${existingUrl.shortUrl}`});
+        res.status(201).json({ shortUrl: `${req.protocol}://${req.get('host')}/redirect/${shortUrl}`});
     } catch(error) {
         console.error("Error", error);
         res.status(500).json({message: "Internal sever error", error});
@@ -64,22 +64,20 @@ module.exports.getUrlDetails = async (req, res) => {
         
         console.log("Query:", query); 
 
-        const now = new Date();
-        const currentDate = formatDate(now);
-
-        if(existingUrl.lastAccessDate !== currentDate) {
-            existingUrl.dailyCount = 0;
-            existingUrl.lastAccessDate = currentDate;
-        }
-
         const urlData = await Url.findOne(query);
-        const url = await Url.find();
-        console.log(url);
+
         if (!urlData) {
             console.error("No URL found with query:", query);
             return res.status(404).json({ error: 'URL not found.' });
         }
+        const now = new Date();
+        const currentDate = formatDate(now);
 
+        if(urlData.lastAccessDate !== currentDate) {
+            urlData.dailyCount = 0;
+            urlData.lastAccessDate = currentDate;
+        }
+        await urlData.save();
         res.status(200).json({ url: urlData, hitRate: urlData.hitRate });
     } catch (error) {
         console.error("Error in getUrlDetails:", error);
