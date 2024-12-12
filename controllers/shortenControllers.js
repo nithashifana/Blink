@@ -10,12 +10,12 @@ module.exports.shortenUrl = async(req, res) => {
     try {
         const existingUrl = await Url.findOne({ longUrl });
         if(existingUrl) {
-            return res.status(400).json({ shortUrl: `${req.protocol}://${req.host}/${url.shortUrl}`});
+            return res.status(400).json({ shortUrl: `${req.protocol}://${req.host}/${existingUrl.shortUrl}`});
         }
         const shortUrl = generateShortUrl();
         newUrl = new Url({ longUrl, shortUrl});
         await newUrl.save();
-        res.status(201).json({ shortUrl: `${req.protocol}://${req.host}/${url.shortUrl}`});
+        res.status(201).json({ shortUrl: `${req.protocol}://${req.host}/${existingUrl.shortUrl}`});
     } catch(error) {
         console.error("Error", error);
         res.status(500).json({message: "Internal sever error", error});
