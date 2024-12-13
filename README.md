@@ -2,8 +2,11 @@
 
 An API service for shortening URLs, with additional features for analytics, rate limiting, and monetization.
 
+
 ## Why "B-link"?
+
 The name “B-link” captures the essence of the service: quick and compact, like a blink. The ‘B’ symbolizes ‘better’ and ‘link,’ reflecting our commitment to providing better, faster, and more efficient links for users.
+
 
 ## Features
 1. **Shorten Long URLs**: Convert long URLs into short, shareable URLs.
@@ -22,12 +25,15 @@ The name “B-link” captures the essence of the service: quick and compact, li
    git clone https://github.com/nithashifana/blink.git
    cd blink
    ```
+   
 2. Install dependencies:
    ```bash
    npm install
    ```
+   
 3. Set up MongoDb
-4. Start the server:
+   
+5. Start the server:
    ```bash
    npm start
    ```
@@ -47,17 +53,17 @@ The backend is hosted on Render. You can access it at the following URL:
 
 2. **Redirect**:
     ```bash
-    curl -X GET https://blink-uu0r.onrender.com/redirect/<shortUrl>
+    curl -X GET https://blink-uu0r.onrender.com/redirect/6ac8da8a
     ```
 
 3. **getUrlDetails**:
     ```bash
-   curl -X GET https://blink-uu0r.onrender.com/details/<shortUrl>
+   curl -X GET https://blink-uu0r.onrender.com/details/6ac8da8a
     ```
 
 4. **TopUrl**:
     ```bash
-   curl -X GET https://blink-uu0r.onrender.com/top/<number> | jq
+   curl -X GET https://blink-uu0r.onrender.com/top/<number>
     ```
     
 ---
