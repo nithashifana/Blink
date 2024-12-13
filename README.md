@@ -9,6 +9,7 @@ The name “B-link” captures the essence of the service: quick and compact, li
 
 
 ## Features
+
 1. **Shorten Long URLs**: Convert long URLs into short, shareable URLs.
 2. **Redirection**: Use the short URL to redirect to the original long URL.
 3. **Rate Limiting**: Restrict excessive usage to 20 requests per day per URL.
@@ -20,20 +21,24 @@ The name “B-link” captures the essence of the service: quick and compact, li
 ## Getting Started
 
 ### Installation
+
 1. Clone the repository:
+   
    ```bash
    git clone https://github.com/nithashifana/blink.git
    cd blink
    ```
    
 2. Install dependencies:
+
    ```bash
    npm install
    ```
    
-3. Set up MongoDb
+4. Set up MongoDb
    
 5. Start the server:
+
    ```bash
    npm start
    ```
@@ -47,28 +52,33 @@ The backend is hosted on Render. You can access it at the following URL:
 ## **Example cURL Requests**
 
 1. **Shorten long URL**:
-    ```bash
+
+   ```bash
     curl -X POST https://blink-uu0r.onrender.com/shorten -H "Content-Type: application/json" -d '{"longUrl": "https://github.com/nithashifana"}'
     ```
 
-2. **Redirect**:
-    ```bash
+3. **Redirect**:
+
+   ```bash
     curl -X GET https://blink-uu0r.onrender.com/redirect/6ac8da8a
     ```
 
-3. **getUrlDetails**:
-    ```bash
-   curl -X GET https://blink-uu0r.onrender.com/details/6ac8da8a
+5. **getUrlDetails**:
+
+   ```bash
+   curl -X GET https://blink-uu0r.onrender.com/details/<shortUrl>
     ```
 
-4. **TopUrl**:
-    ```bash
+7. **TopUrl**:
+
+   ```bash
    curl -X GET https://blink-uu0r.onrender.com/top/<number>
     ```
     
 ---
 
 ## Technologies Used
+
 - **Node.js**: Backend framework.
 - **Express.js**: Routing and middleware.
 - **MongoDB**: Database for URL mapping and analytics.
