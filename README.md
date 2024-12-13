@@ -3,7 +3,7 @@
 An API service for shortening URLs, with additional features for analytics, rate limiting, and monetization.
 
 ## Why "B-link"?
-The name "B-link" represents the essence of the service: small and fast, just like a blink. It's a play on words combining "blink" and "link," emphasizing the quick and seamless redirection of URLs.
+The name “B-link” captures the essence of the service: quick and compact, like a blink. The ‘B’ symbolizes ‘better’ and ‘link,’ reflecting our commitment to providing better, faster, and more efficient links for users.
 
 ## Features
 1. **Shorten Long URLs**: Convert long URLs into short, shareable URLs.
